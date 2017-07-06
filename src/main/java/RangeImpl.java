@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RangeImpl implements Range {
-    long[] range;
+    List<Long> list;
     int size;
     long lowerBound;
     long upperBound;
@@ -46,13 +46,14 @@ public class RangeImpl implements Range {
     }
 
     public List<Long> asList() {
-        if (range == null) {
-            range = new long[size];
+        if (list == null) {
+            long[] range = new long[size];
             for (int i = 0; i < size; i++) {
                 range[i] = this.getLowerBound() + i;
             }
+            list = Arrays.stream(range).boxed().collect(Collectors.toList());
         }
-        return Arrays.stream(range).boxed().collect(Collectors.toList());
+        return list;
     }
 
     public Iterator<Long> asIterator() {
