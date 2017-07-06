@@ -1,16 +1,14 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RangeImpl implements Range {
-    List<Long> list;
-    int size;
-    long lowerBound;
-    long upperBound;
-
+    private List<Long> list;
+    private long size;
+    private long lowerBound;
+    private long upperBound;
 
     public RangeImpl(long start, long end) {
         checkBounds(start, end);
-        size = (int) (end - start + 1);
+        size = end - start + 1;
         lowerBound = start;
         upperBound = end;
     }
@@ -47,11 +45,15 @@ public class RangeImpl implements Range {
 
     public List<Long> asList() {
         if (list == null) {
-            long[] range = new long[size];
-            for (int i = 0; i < size; i++) {
-                range[i] = this.getLowerBound() + i;
-            }
-            list = Arrays.stream(range).boxed().collect(Collectors.toList());
+            list = getListOfRangeElements();
+        }
+        return list;
+    }
+
+    private List<Long> getListOfRangeElements() {
+        List<Long> list = new ArrayList<>((int) size);
+        for (long i = 0; i < size; i++) {
+            list.add(getLowerBound() + i);
         }
         return list;
     }
