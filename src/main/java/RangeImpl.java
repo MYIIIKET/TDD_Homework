@@ -4,16 +4,15 @@ import java.util.stream.Collectors;
 public class RangeImpl implements Range {
     long[] range;
     int size;
+    long lowerBound;
+    long upperBound;
 
 
     public RangeImpl(long start, long end) {
         checkBounds(start, end);
-
         size = (int) (end - start + 1);
-        range = new long[size];
-        for (int i = 0; i < size; i++) {
-            range[i] = start + i;
-        }
+        lowerBound = start;
+        upperBound = end;
     }
 
     private void checkBounds(long start, long end) {
@@ -35,11 +34,11 @@ public class RangeImpl implements Range {
     }
 
     public long getLowerBound() {
-        return range[0];
+        return lowerBound;
     }
 
     public long getUpperBound() {
-        return range[size - 1];
+        return upperBound;
     }
 
     public boolean contains(long value) {
@@ -47,6 +46,12 @@ public class RangeImpl implements Range {
     }
 
     public List<Long> asList() {
+        if (range == null) {
+            range = new long[size];
+            for (int i = 0; i < size; i++) {
+                range[i] = this.getLowerBound() + i;
+            }
+        }
         return Arrays.stream(range).boxed().collect(Collectors.toList());
     }
 
